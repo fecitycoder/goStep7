@@ -1,4 +1,4 @@
-package gos7
+package goStep7
 
 // Copyright 2018 Trung Hieu Le. All rights reserved.
 // This software may be modified and distributed under the terms
@@ -224,7 +224,7 @@ func (mb *client) readArea(area int, dbNumber int, start int, amount int, wordLe
 		request.Data[29] = byte(address & 0x0FF)
 		address = address >> 8
 		request.Data[28] = byte(address & 0x0FF)
-    var response *ProtocolDataUnit
+		var response *ProtocolDataUnit
 		response, sendError := mb.send(&request)
 		err = sendError
 

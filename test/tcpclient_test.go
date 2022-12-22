@@ -9,9 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"../../gos7"
-	"sync"
 	"fmt"
+	"sync"
+
+	"github/fecitycoder/goStep7"
 )
 
 const (
@@ -21,13 +22,13 @@ const (
 )
 
 func TestTCPClient(t *testing.T) {
-	handler := gos7.NewTCPClientHandler(tcpDevice, rack, slot)
+	handler := goStep7.NewTCPClientHandler(tcpDevice, rack, slot)
 	handler.Timeout = 200 * time.Second
 	handler.IdleTimeout = 200 * time.Second
 	handler.Logger = log.New(os.Stdout, "tcp: ", log.LstdFlags)
 	handler.Connect()
 	defer handler.Close()
-	client := gos7.NewClient(handler)
+	client := goStep7.NewClient(handler)
 	ClientTestAll(t, client)
 }
 
@@ -45,7 +46,7 @@ func TestMultiTCPClient(t *testing.T) {
 
 	for k := range tcpDevices {
 		go func(device map[string]string) {
-			handler := gos7.NewTCPClientHandler(tcpDevice, rack, slot)
+			handler := goStep7.NewTCPClientHandler(tcpDevice, rack, slot)
 			handler.Timeout = 200 * time.Second
 			handler.IdleTimeout = 200 * time.Second
 			handler.Logger = log.New(os.Stdout, "tcp: ", log.LstdFlags)
@@ -53,7 +54,7 @@ func TestMultiTCPClient(t *testing.T) {
 			handler.Connect()
 			handlers.Store(device["tcpDevice"], handler)
 
-			client := gos7.NewClient(handler)
+			client := goStep7.NewClient(handler)
 			clients.Store(device["tcpDevice"], client)
 
 			c <- 1
@@ -71,11 +72,11 @@ func TestMultiTCPClient(t *testing.T) {
 	}
 
 	cli, exist := clients.Load("192.168.10.10:102")
-	client, ok := cli.(gos7.Client)
+	client, ok := cli.(goStep7.Client)
 	if exist && ok {
 		buf := make([]byte, 255)
-		client.AGReadDB(200, 34, 4,  buf)
-		var s7 gos7.Helper
+		client.AGReadDB(200, 34, 4, buf)
+		var s7 goStep7.Helper
 		var result float32
 		s7.GetValueAt(buf, 0, &result)
 		fmt.Printf("%v\n", result)
@@ -84,7 +85,7 @@ func TestMultiTCPClient(t *testing.T) {
 	defer func() {
 		handlers.Range(func(key, value interface{}) bool {
 			h, _ := handlers.Load(key)
-			if hh, ok := h.(*gos7.TCPClientHandler); ok {
+			if hh, ok := h.(*goStep7.TCPClientHandler); ok {
 				hh.Close()
 			}
 			return true

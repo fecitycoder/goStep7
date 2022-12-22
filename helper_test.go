@@ -1,4 +1,4 @@
-package gos7
+package goStep7
 
 import (
 	"testing"

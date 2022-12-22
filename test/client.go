@@ -9,11 +9,11 @@ import (
 	"strings"
 	"testing"
 
-	"../../gos7"
+	"github/fecitycoder/goStep7"
 )
 
 //ClientTestAll client test all
-func ClientTestAll(t *testing.T, client gos7.Client) {
+func ClientTestAll(t *testing.T, client goStep7.Client) {
 	//write value to 100
 	ClientTestWriteIntDB(t, client, 100)
 	//read and assert with 100
@@ -35,14 +35,14 @@ func ClientTestAll(t *testing.T, client gos7.Client) {
 }
 
 //ClientTestWriteIntDB client test write int
-func ClientTestWriteIntDB(t *testing.T, client gos7.Client, value int16) {
+func ClientTestWriteIntDB(t *testing.T, client goStep7.Client, value int16) {
 	address := 2710
 	start := 8
 	size := 2
 	buffer := make([]byte, 255)
 
 	//binary.BigEndian.PutUint16(buffer[0:], uint16(value))
-	var helper gos7.Helper
+	var helper goStep7.Helper
 	helper.SetValueAt(buffer, 0, value)
 	err := client.AGWriteDB(address, start, size, buffer)
 	if err != nil {
@@ -52,7 +52,7 @@ func ClientTestWriteIntDB(t *testing.T, client gos7.Client, value int16) {
 }
 
 //ClientTestReadIntDB client test read int
-func ClientTestReadIntDB(t *testing.T, client gos7.Client) {
+func ClientTestReadIntDB(t *testing.T, client goStep7.Client) {
 	address := 2710
 	start := 8
 	size := 2
@@ -62,14 +62,14 @@ func ClientTestReadIntDB(t *testing.T, client gos7.Client) {
 		t.Fatal(err)
 	}
 	// result := binary.BigEndian.Uint16(results)
-	var s7 gos7.Helper
+	var s7 goStep7.Helper
 	var result uint16
 	s7.GetValueAt(buf, 0, &result)
 	AssertEquals(t, 100, int(result))
 }
 
 //ClientTestDirectory test directory functions, list all blocks
-func ClientTestDirectory(t *testing.T, client gos7.Client) {
+func ClientTestDirectory(t *testing.T, client goStep7.Client) {
 	//var bl gos7.S7BlocksList
 	bl, err := client.PGListBlocks()
 	if err != nil {
@@ -82,7 +82,7 @@ func ClientTestDirectory(t *testing.T, client gos7.Client) {
 }
 
 //ClientTestGetCPUInfo get the CPU info
-func ClientTestGetCPUInfo(t *testing.T, client gos7.Client) {
+func ClientTestGetCPUInfo(t *testing.T, client goStep7.Client) {
 	info, err := client.GetCPUInfo()
 	if err != nil {
 		t.Fatal(err)
@@ -91,7 +91,7 @@ func ClientTestGetCPUInfo(t *testing.T, client gos7.Client) {
 }
 
 //ClientTestGetAGBlockInfo get AG block info
-func ClientTestGetAGBlockInfo(t *testing.T, client gos7.Client) {
+func ClientTestGetAGBlockInfo(t *testing.T, client goStep7.Client) {
 	info, err := client.GetAgBlockInfo(65, 2710)
 	if err != nil {
 		t.Fatal(err)
@@ -100,7 +100,7 @@ func ClientTestGetAGBlockInfo(t *testing.T, client gos7.Client) {
 }
 
 //ClientPLCGetStatus get PLC status
-func ClientPLCGetStatus(t *testing.T, client gos7.Client) {
+func ClientPLCGetStatus(t *testing.T, client goStep7.Client) {
 	status, err := client.PLCGetStatus()
 	if err != nil {
 		t.Fatal(err)
@@ -109,14 +109,14 @@ func ClientPLCGetStatus(t *testing.T, client gos7.Client) {
 }
 
 //ClientAGReadMulti read multi client
-func ClientAGReadMulti(t *testing.T, client gos7.Client) {
+func ClientAGReadMulti(t *testing.T, client goStep7.Client) {
 	data1 := make([]byte, 1024)
 	data2 := make([]byte, 1024)
 	data3 := make([]byte, 1024)
 	var error1, error2, error3 string
 
-	var items = []gos7.S7DataItem{
-		gos7.S7DataItem{
+	var items = []goStep7.S7DataItem{
+		goStep7.S7DataItem{
 			Area:     0x84,
 			WordLen:  0x02,
 			DBNumber: 2710,
@@ -125,7 +125,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 			Data:     data1,
 			Error:    error1,
 		},
-		gos7.S7DataItem{
+		goStep7.S7DataItem{
 			Area:     0x84,
 			WordLen:  0x02,
 			DBNumber: 2810,
@@ -134,7 +134,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 			Data:     data2,
 			Error:    error2,
 		},
-		gos7.S7DataItem{
+		goStep7.S7DataItem{
 			Area:     0x84,
 			WordLen:  0x02,
 			DBNumber: 2910,
@@ -158,7 +158,7 @@ func ClientAGReadMulti(t *testing.T, client gos7.Client) {
 }
 
 //ClientAGWriteMulti read multi client
-func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
+func ClientAGWriteMulti(t *testing.T, client goStep7.Client) {
 	data1 := make([]byte, 1024)
 	data2 := make([]byte, 1024)
 	data3 := make([]byte, 1024)
@@ -169,8 +169,8 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 	}
 	var error1, error2, error3 string
 
-	var items = []gos7.S7DataItem{
-		gos7.S7DataItem{
+	var items = []goStep7.S7DataItem{
+		goStep7.S7DataItem{
 			Area:     0x84,
 			WordLen:  0x02,
 			DBNumber: 2710,
@@ -179,7 +179,7 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 			Data:     data1,
 			Error:    error1,
 		},
-		gos7.S7DataItem{
+		goStep7.S7DataItem{
 			Area:     0x84,
 			WordLen:  0x02,
 			DBNumber: 2810,
@@ -188,7 +188,7 @@ func ClientAGWriteMulti(t *testing.T, client gos7.Client) {
 			Data:     data2,
 			Error:    error2,
 		},
-		gos7.S7DataItem{
+		goStep7.S7DataItem{
 			Area:     0x84,
 			WordLen:  0x02,
 			DBNumber: 2910,

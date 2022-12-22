@@ -1,4 +1,4 @@
-package gos7
+package goStep7
 
 // Copyright 2018 Trung Hieu Le. All rights reserved.
 // This software may be modified and distributed under the terms
