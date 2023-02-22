@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github/fecitycoder/goStep7"
+	"github.com/fecitycoder/goStep7"
 )
 
 const (
