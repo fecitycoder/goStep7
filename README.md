@@ -1,4 +1,4 @@
-# gos7
+# goStep7
 Implementation of Siemens S7 protocol in golang
 
 Overview
